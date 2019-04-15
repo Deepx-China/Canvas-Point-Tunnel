@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas Point Tunnel</title>
+    <style>
+        h1{width:500px;position: fixed;top:40vh;left:50%;margin-left:-250px; color:#ffffff;text-align: center;}
+    </style>
+</head>
+<body>
+    <h1>Canvas Point Tunnel</h1>
+    <canvas id="aniBg"></canvas>
+    <script>
+        ! function (t){
+            t[0].call();
+        }([function(t){
+            function e(t) {
+                if(null !== l.x)
+                    for(var e = 0; e < t; e++) {
+                        var n = {
+                            x: l.x,
+                            y: l.y,
+                            r: 1,
+                            speed: 1,
+                            accel: p,
+                            accel2: f,
+                            angle: g
+                        };
+                        g += s;
+                        var i = {
+                            x: r * Math.cos(n.angle * Math.PI / 180),
+                            y: r * Math.sin(n.angle * Math.PI / 180)
+                        };
+                        n.x += i.x, n.y += i.y, u.push(n)
+                    }
+            }
+
+            function n() {
+                e(a);
+                var t = [];
+                if(h.clearRect(0, 0, c.width, c.height), (d += o) < 360) {
+                    l = {
+                        x: c.width / 2,
+                        y: c.height / 2,
+                        angle: d
+                    };
+                    var n = l.angle * Math.PI / 180;
+                    l.x += i * Math.cos(n), l.y += i * Math.sin(n)
+                } else d = 0;
+                for(; u.length;) {
+                    var r = u.pop(),
+                        s = {
+                            x: r.speed * Math.cos(r.angle * Math.PI / 180),
+                            y: r.speed * Math.sin(r.angle * Math.PI / 180)
+                        };
+                    h.beginPath(), h.moveTo(r.x, r.y), h.lineTo(r.x + s.x, r.y + s.y), h.closePath(), h.stroke(), r.x += s.x, r.y += s.y, r.speed *= r.accel, r.accel += r.accel2, r.x < c.width && r.x > 0 && r.y < c.height && r.y > 0 && t.push(r)
+                }
+                u = t.slice(0).reverse()
+            }
+            var r = 150,
+                i = 200,
+                o = 1,
+                a = 10,
+                s = 37,
+                c = document.getElementById("aniBg"),
+                h = c.getContext("2d"),
+                u = [],
+                l = {},
+                d = 0,
+                p = 1.01,
+                f = 1e-6,
+                m = window.devicePixelRatio || 1,
+                g = 0;
+            c.width = window.innerWidth * m, c.height = window.innerHeight * m, c.style.setProperty("top", "-1px"), c.style.setProperty("left", "-1px"), l.x = null, l.y = null, h.strokeStyle = "#8325EB", h.translate(.5, .5), window.requestAnimFrame = function() {
+                    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(t) {
+                        window.setTimeout(t, 1e3 / 60)
+                    }
+                }(),
+                c.style.setProperty("background-color", "#110f1a"),
+                function t() {
+                    requestAnimFrame(t), n()
+                }(), 2 == m && (c.style.width = "100%", c.style.height = "100%")
+        }]);
+        
+    </script>
+</body>
+</html>
